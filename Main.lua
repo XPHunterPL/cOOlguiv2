@@ -1,124 +1,152 @@
--- cOOlguiv2 FINAL by XPHunterPL
+--=====================================================
+--  cOOlguiv2 FINAL VERSION
+--  Author: XPHunterPL
+--  GUI inspired by c00lkidd clan style
+--  Color Theme: RED + BLACK
+--  Minimize System + Buttons + ESP + Fly + TP + Speed
+--=====================================================
 
--- UI SETTINGS
-local MAIN_COLOR = Color3.fromRGB(255, 0, 0) -- RED
-local BACK_COLOR = Color3.fromRGB(20, 20, 20) -- BLACK
+-------------------------------------------------------
+-- SETTINGS
+-------------------------------------------------------
+local MAIN_COLOR = Color3.fromRGB(255, 0, 0)   -- Red
+local BACK_COLOR = Color3.fromRGB(15, 15, 15)  -- Black
 local TEXT_COLOR = Color3.fromRGB(255, 255, 255)
 
--- CREATE GUI
-local ScreenGui = Instance.new("ScreenGui")
-ScreenGui.Name = "cOOlguiv2"
-ScreenGui.Parent = game.CoreGui
+-------------------------------------------------------
+-- GUI CREATION
+-------------------------------------------------------
+local gui = Instance.new("ScreenGui")
+gui.Name = "cOOlguiv2"
+gui.Parent = game.CoreGui
 
 -- MAIN WINDOW
-local Main = Instance.new("Frame")
-Main.Size = UDim2.new(0, 350, 0, 300)
-Main.Position = UDim2.new(0.5, -175, 0.5, -150)
-Main.BackgroundColor3 = BACK_COLOR
-Main.BorderSizePixel = 0
-Main.Active = true
-Main.Draggable = true
-Main.Parent = ScreenGui
+local main = Instance.new("Frame")
+main.Size = UDim2.new(0, 380, 0, 330)
+main.Position = UDim2.new(0.5, -190, 0.5, -165)
+main.BackgroundColor3 = BACK_COLOR
+main.BorderSizePixel = 0
+main.Active = true
+main.Draggable = true
+main.Parent = gui
 
--- TOPBAR
-local TopBar = Instance.new("Frame")
-TopBar.Size = UDim2.new(1, 0, 0, 30)
-TopBar.BackgroundColor3 = MAIN_COLOR
-TopBar.BorderSizePixel = 0
-TopBar.Parent = Main
+-- TOP BAR
+local bar = Instance.new("Frame")
+bar.Size = UDim2.new(1, 0, 0, 32)
+bar.BackgroundColor3 = MAIN_COLOR
+bar.BorderSizePixel = 0
+bar.Parent = main
 
 -- TITLE
-local Title = Instance.new("TextLabel")
-Title.Size = UDim2.new(1, -60, 1, 0)
-Title.Position = UDim2.new(0, 10, 0, 0)
-Title.BackgroundTransparency = 1
-Title.Text = "cOOlguiv2"
-Title.TextColor3 = TEXT_COLOR
-Title.TextSize = 20
-Title.Font = Enum.Font.SourceSansBold
-Title.TextXAlignment = Enum.TextXAlignment.Left
-Title.Parent = TopBar
+local title = Instance.new("TextLabel")
+title.Size = UDim2.new(1, -60, 1, 0)
+title.Position = UDim2.new(0, 10, 0, 0)
+title.BackgroundTransparency = 1
+title.Text = "cOOlguiv2"
+title.TextColor3 = TEXT_COLOR
+title.TextSize = 22
+title.Font = Enum.Font.SourceSansBold
+title.TextXAlignment = Enum.TextXAlignment.Left
+title.Parent = bar
 
 -- MINIMIZE BUTTON
-local MinBtn = Instance.new("TextButton")
-MinBtn.Size = UDim2.new(0, 40, 1, 0)
-MinBtn.Position = UDim2.new(1, -40, 0, 0)
-MinBtn.BackgroundColor3 = BACK_COLOR
-MinBtn.Text = "-"
-MinBtn.TextColor3 = TEXT_COLOR
-MinBtn.TextSize = 24
-MinBtn.Font = Enum.Font.SourceSansBold
-MinBtn.Parent = TopBar
+local min = Instance.new("TextButton")
+min.Size = UDim2.new(0, 50, 1, 0)
+min.Position = UDim2.new(1, -50, 0, 0)
+min.BackgroundColor3 = BACK_COLOR
+min.Text = "-"
+min.TextColor3 = TEXT_COLOR
+min.TextSize = 26
+min.Font = Enum.Font.SourceSansBold
+min.Parent = bar
 
 local minimized = false
-MinBtn.MouseButton1Click:Connect(function()
+min.MouseButton1Click:Connect(function()
     minimized = not minimized
     if minimized then
-        Main.Size = UDim2.new(0, 350, 0, 30)
+        main.Size = UDim2.new(0, 380, 0, 32)
     else
-        Main.Size = UDim2.new(0, 350, 0, 300)
+        main.Size = UDim2.new(0, 380, 0, 330)
     end
 end)
 
+-------------------------------------------------------
 -- BUTTON CREATOR
-local function MakeButton(text, y, callback)
-    local B = Instance.new("TextButton")
-    B.Size = UDim2.new(0, 320, 0, 30)
-    B.Position = UDim2.new(0, 15, 0, y)
-    B.BackgroundColor3 = MAIN_COLOR
-    B.TextColor3 = TEXT_COLOR
-    B.TextSize = 18
-    B.Font = Enum.Font.SourceSansBold
-    B.Text = text
-    B.Parent = Main
-    B.MouseButton1Click:Connect(callback)
+-------------------------------------------------------
+local function MakeButton(text, posY, callback)
+    local b = Instance.new("TextButton")
+    b.Size = UDim2.new(0, 350, 0, 32)
+    b.Position = UDim2.new(0, 15, 0, posY)
+    b.BackgroundColor3 = MAIN_COLOR
+    b.TextColor3 = TEXT_COLOR
+    b.TextSize = 20
+    b.Font = Enum.Font.SourceSansBold
+    b.Text = text
+    b.Parent = main
+    b.MouseButton1Click:Connect(callback)
 end
 
------------------------------------------------------------------------
---  FEATURES
------------------------------------------------------------------------
+-------------------------------------------------------
+-- *** FEATURES ***
+-------------------------------------------------------
 
--- ESP
-MakeButton("ESP", 40, function()
-    for _, p in pairs(game:GetService("Players"):GetPlayers()) do
-        if p.Character then
-            local hl = Instance.new("Highlight")
-            hl.FillColor = Color3.fromRGB(255,0,0)
-            hl.OutlineColor = Color3.fromRGB(0,0,0)
-            hl.Parent = p.Character
+-- ESP — highlight all players
+MakeButton("ESP", 45, function()
+    for _, plr in pairs(game.Players:GetPlayers()) do
+        if plr.Character then
+            local h = Instance.new("Highlight")
+            h.FillColor = Color3.fromRGB(255, 0, 0)
+            h.OutlineColor = Color3.fromRGB(0, 0, 0)
+            h.Parent = plr.Character
         end
     end
 end)
 
--- FLY
-MakeButton("FLY", 80, function()
+-- FLY — external fly script
+MakeButton("Fly", 85, function()
     loadstring(game:HttpGet("https://raw.githubusercontent.com/IcesYtTroll/FlyGui/main/Fly.lua"))()
 end)
 
--- TELEPORT TO PLAYER
-MakeButton("TP to player", 120, function()
-    local target = game.Players:GetPlayers()[2]
-    if target and target.Character then
-        game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame =
-        target.Character.HumanoidRootPart.CFrame
+-- TELEPORT TO RANDOM PLAYER
+MakeButton("TP to Player", 125, function()
+    local lp = game.Players.LocalPlayer
+    for _, plr in pairs(game.Players:GetPlayers()) do
+        if plr ~= lp and plr.Character then
+            lp.Character.HumanoidRootPart.CFrame =
+                plr.Character.HumanoidRootPart.CFrame
+            break
+        end
     end
 end)
 
 -- CAR KIDNAP
-MakeButton("CAR (kidnap)", 160, function()
+MakeButton("Car Kidnap", 165, function()
+    local p = game.Players.LocalPlayer
+    local root = p.Character.HumanoidRootPart
+
     local car = Instance.new("Part")
-    car.Size = Vector3.new(6,2,10)
-    car.Position = game.Players.LocalPlayer.Character.HumanoidRootPart.Position + Vector3.new(0,5,0)
+    car.Size = Vector3.new(8, 3, 14)
+    car.Position = root.Position + Vector3.new(0, 5, 0)
+    car.BrickColor = BrickColor.new("Bright red")
     car.Anchored = false
-    car.BrickColor = BrickColor.Red()
     car.Parent = workspace
 end)
 
--- SPEED
-MakeButton("Speed +", 200, function()
+-- SPEED BOOST
+MakeButton("Speed 50", 205, function()
     game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = 50
 end)
 
------------------------------------------------------------------------
--- END
------------------------------------------------------------------------
+-- RESET SPEED
+MakeButton("Reset Speed", 245, function()
+    game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = 16
+end)
+
+-- CLOSE GUI
+MakeButton("Close GUI", 285, function()
+    gui:Destroy()
+end)
+
+-------------------------------------------------------
+-- END OF FILE
+-------------------------------------------------------
